@@ -8,7 +8,17 @@ import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-const term = ref('');
+const router = useRouter();
+//const term = ref('');
+let searchTerm = '';
+
+const goToPath =  () => {
+  let timer;
+  clearTimeout(timer)
+  timer = setTimeout(async () => {
+    await navigateTo({ path: 'search', query: {q: searchTerm}})
+  }, 2500)
+}
 </script>
 
 <template>
@@ -75,14 +85,7 @@ const term = ref('');
              <span class="pl-2">All</span>
             </div>
             </NuxtLink>
-            <!-- <NuxtLink to="/search"
-              class="text-muted-foreground hover:text-foreground"
-            >
-             <div class="flex flex-row">
-             <div class="mt-0"><Search /></div>
-             <span class="pl-2">Search</span>
-            </div>
-            </NuxtLink> -->
+
             <NuxtLink to="/chats"
               class="text-muted-foreground hover:text-foreground"
             >
@@ -122,14 +125,22 @@ const term = ref('');
         <form class="ml-auto flex-1 sm:flex-initial">
           <div class="relative">
             <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <NuxtLink :to="{ path: 'search', query: {q: term}}">
+            <!-- <NuxtLink :to="{ path: 'search', query: {q: term}}">
             <Input
               type="search"
-              v-model="term"
-              placeholder="Search by category..."
+              v-model="searchTerm"
+              placeholder="Search for something..."
               class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
-            </NuxtLink>
+            </NuxtLink> -->
+              <Input
+              type="search"
+              v-model="searchTerm"
+              @keyup="goToPath"
+              @blur="searchTerm = ''"
+              placeholder="Search category or name"
+              class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+            />
           </div>
         </form>
         <DropdownMenu>
