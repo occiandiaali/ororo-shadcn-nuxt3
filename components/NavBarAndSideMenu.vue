@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  Grid3X3, MessageCircle, CircleUser, Menu, Package2, PenSquareIcon, Search } from 'lucide-vue-next'
+import { InfoIcon, Grid3X3, MessageCircle, Menu, Package2, PenSquareIcon, Search } from 'lucide-vue-next'
 
 import { Button } from '@/components/ui/button'
 
@@ -7,8 +7,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 
+const router = useRouter();
+//const term = ref('');
+let searchTerm = '';
 
+const goToPath =  () => {
+  let timer;
+  clearTimeout(timer)
+  timer = setTimeout(async () => {
+    await navigateTo({ path: 'search', query: {q: searchTerm}})
+  }, 2500)
+}
 </script>
 
 <template>
@@ -22,32 +38,32 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
           <Package2 class="h-6 w-6" />
           <span class="sr-only">Ororo App</span>
         </a>
-        <RouterLink to="/"
+        <NuxtLink to="/"
           class="text-foreground transition-colors hover:text-foreground"
         >
           Home
-        </RouterLink>
+        </NuxtLink>
 
-                <RouterLink to="/publish"
+                <NuxtLink to="/publish"
           class="text-muted-foreground transition-colors hover:text-foreground"
         >
           Publish
-        </RouterLink>
-        <RouterLink to="/chats"
+        </NuxtLink>
+        <NuxtLink to="/chats"
           class="text-muted-foreground transition-colors hover:text-foreground"
         >
           Chats
-        </RouterLink>
-        <RouterLink to="/analytics"
+        </NuxtLink>
+        <NuxtLink to="/analytics"
           class="text-muted-foreground transition-colors hover:text-foreground"
         >
           Analytics
-        </RouterLink>
-        <RouterLink to="/faqs"
+        </NuxtLink>
+        <NuxtLink to="/faqs"
           class="text-muted-foreground transition-colors hover:text-foreground"
         >
           FAQs
-        </RouterLink>
+        </NuxtLink>
       </nav>
       <Sheet>
         <SheetTrigger as-child>
@@ -69,67 +85,78 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
               <Package2 class="h-6 w-6" />
               <span class="sr-only">Ororo</span>
             </a>
-            <RouterLink to="/" class="hover:text-foreground mt-6">
+            <NuxtLink to="/" class="hover:text-foreground mt-6">
             <div class="flex flex-row">
              <div class="mt-0"><Grid3X3 /></div>
              <span class="pl-2">All</span>
             </div>
-            </RouterLink>
-            <RouterLink to="/search"
-              class="text-muted-foreground hover:text-foreground"
-            >
-             <div class="flex flex-row">
-             <div class="mt-0"><Search /></div>
-             <span class="pl-2">Search</span>
-            </div>
-            </RouterLink>
-            <RouterLink to="/chats"
+            </NuxtLink>
+
+            <NuxtLink to="/chats"
               class="text-muted-foreground hover:text-foreground"
             >
             <div class="flex flex-row">
              <div class="mt-0"><MessageCircle/></div>
              <span class="pl-2">Chats</span>
             </div>
-            </RouterLink>
-                    <RouterLink to="/publish"
+            </NuxtLink>
+                    <NuxtLink to="/publish"
           class="text-muted-foreground transition-colors hover:text-foreground"
         >
            <div class="flex flex-row">
              <div class="mt-0"><PenSquareIcon/></div>
              <span class="pl-2">Publish</span>
             </div>
-        </RouterLink>
-            <RouterLink to="/faqs"
+        </NuxtLink>
+            <NuxtLink to="/faqs"
               class="text-muted-foreground hover:text-foreground"
             >
               FAQs
-            </RouterLink>
-            <RouterLink to="/analytics"
+            </NuxtLink>
+            <NuxtLink to="/analytics"
               class="text-muted-foreground hover:text-foreground"
             >
               Analytics
-            </RouterLink>
+            </NuxtLink>
 
-             <RouterLink to="#"
+             <NuxtLink to="#"
               class="text-muted-foreground hover:text-foreground"
             >
               Log out
-            </RouterLink>
+            </NuxtLink>
           </nav>
         </SheetContent>
       </Sheet>
       <div class="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <!-- <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>Hover</TooltipTrigger>
+      <TooltipContent>
+        <p>Enter 'electronics', 'phones', etc. to search by category..</p>
+        <p>Type an item word, or words, to search by item</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider> -->
         <form class="ml-auto flex-1 sm:flex-initial">
           <div class="relative">
             <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <RouterLink to="/search">
+            <!-- <NuxtLink :to="{ path: 'search', query: {q: term}}">
             <Input
               type="search"
-              
-              placeholder="Search by category..."
+              v-model="searchTerm"
+              placeholder="Search for something..."
               class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
-            </RouterLink>
+            </NuxtLink> -->
+              <Input
+              type="search"
+              v-model="searchTerm"
+              @keyup="goToPath"
+              @blur="searchTerm = ''"
+              placeholder="Search category or name"
+              class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+            />
+           <InfoIcon class="absolute right-3 top-3 h-4 w-4 cursor-pointer"/> 
           </div>
         </form>
         <DropdownMenu>
@@ -147,13 +174,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-            <RouterLink to="/publish">Create Post</RouterLink>
+            <NuxtLink to="/publish">Create Post</NuxtLink>
             </DropdownMenuItem>
             <DropdownMenuItem>
-            <RouterLink to="/account">Account</RouterLink>
+            <NuxtLink to="/account">Account</NuxtLink>
             </DropdownMenuItem>
             <DropdownMenuItem>
-            <RouterLink to="/faqs">FAQs</RouterLink>
+            <NuxtLink to="/faqs">FAQs</NuxtLink>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Logout</DropdownMenuItem>
