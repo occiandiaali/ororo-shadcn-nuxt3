@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  Grid3X3, MessageCircle, CircleUser, Menu, Package2, PenSquareIcon, Search } from 'lucide-vue-next'
+import { InfoIcon, Grid3X3, MessageCircle, Menu, Package2, PenSquareIcon, Search } from 'lucide-vue-next'
 
 import { Button } from '@/components/ui/button'
 
@@ -7,6 +7,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 
 const router = useRouter();
 //const term = ref('');
@@ -122,6 +128,15 @@ const goToPath =  () => {
         </SheetContent>
       </Sheet>
       <div class="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <!-- <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>Hover</TooltipTrigger>
+      <TooltipContent>
+        <p>Enter 'electronics', 'phones', etc. to search by category..</p>
+        <p>Type an item word, or words, to search by item</p>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider> -->
         <form class="ml-auto flex-1 sm:flex-initial">
           <div class="relative">
             <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -141,6 +156,7 @@ const goToPath =  () => {
               placeholder="Search category or name"
               class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
+           <InfoIcon class="absolute right-3 top-3 h-4 w-4 cursor-pointer"/> 
           </div>
         </form>
         <DropdownMenu>
