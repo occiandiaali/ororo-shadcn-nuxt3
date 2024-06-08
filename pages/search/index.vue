@@ -3,6 +3,8 @@ const supabase = useSupabaseClient();
 const results = ref<any>([])
 const location = useRouter();
 
+let showSpinner = ref(false);
+
 let searchTerm = ref<any>(null);
 
 watch(() => location.currentRoute.value.query, async () => {

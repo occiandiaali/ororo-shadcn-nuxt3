@@ -7,24 +7,44 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger
+// } from '@/components/ui/tooltip'
 
 const router = useRouter();
 //const term = ref('');
 let searchTerm = '';
+const keepShowingInfo = ref(true);
+
+const showInfo = () => {
+  let doNotShow = confirm(`Enter a category name like 'electronics', 'phones', 'computers', or 'fashion' to see Posts by category. 
+  Or just type the name of what you're searching for. 
+  Click 'OK' if you don't want to see this message again.
+  `);
+  if (doNotShow) {
+    keepShowingInfo.value = false;
+    localStorage.setItem('keepShowing', JSON.stringify(keepShowingInfo.value));
+    location.reload();
+  }
+}
+
 
 const goToPath =  () => {
+  keepShowingInfo.value = JSON.parse(localStorage.getItem('keepShowing') ?? "true");
+  keepShowingInfo.value ? showInfo() : null;
   let timer;
   clearTimeout(timer)
   timer = setTimeout(async () => {
     await navigateTo({ path: 'search', query: {q: searchTerm}})
-  }, 2500)
+  }, 1500)
 }
+
+// onMounted(() => {
+//   keepShowingInfo.value = JSON.parse(localStorage.getItem('keepShowing') || '');
+// })
 </script>
 
 <template>
@@ -156,7 +176,7 @@ const goToPath =  () => {
               placeholder="Search category or name"
               class="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
-           <InfoIcon class="absolute right-3 top-3 h-4 w-4 cursor-pointer"/> 
+           <!-- <InfoIcon class="absolute right-3 top-3 h-4 w-4 cursor-pointer"/>  -->
           </div>
         </form>
         <DropdownMenu>

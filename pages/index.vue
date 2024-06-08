@@ -166,10 +166,11 @@ onMounted(() => {
     </div>
      <div>
         <h1 class="test__title text-sm font-bold mb-1">{{ post.title }}</h1>
-        <p class="test__author font-sm text-xs font-light">{{ 
+        <p class="test__author font-sm text-xs font-light mb-1">{{ 
         new Intl.NumberFormat('en-NG', {style: 'currency',currency: 'NGN'})
           .format(post.price)
          }}</p>
+         <p class="font-sm text-xs font-extralight">In: {{post.category}}</p>
       </div>
   </div>
   </div>
